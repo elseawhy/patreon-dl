@@ -1,4 +1,4 @@
-import { type Database } from "better-sqlite3";
+import { type Database } from "bun:sqlite";
 import type Logger from '../../../utils/logging/Logger.js';
 import { type DBUpdater } from "../Update.js";
 

@@ -110,7 +110,7 @@ export default class InnertubeLoader {
     const sessionPot = USE_PO_TOKEN ? await this.#generateSessionPot(minter) : undefined;
     const innertube = await Innertube.create({
       po_token: sessionPot,
-      fetch: (input, init) => Platform.shim.fetch(input, { ...init, dispatcher: this.#proxy } as any)
+      fetch: ((input: any, init: any) => Platform.shim.fetch(input, { ...init, dispatcher: this.#proxy } as any)) as any
     });
     if (credentials) {
       const __updateCredentials = (data: any) => {
@@ -146,7 +146,7 @@ export default class InnertubeLoader {
 
   static async #generateSessionPot(minter: POTokenMinterWrapper) {
     const innertube = await Innertube.create({
-      fetch: (input, init) => Platform.shim.fetch(input, { ...init, dispatcher: this.#proxy } as any)
+      fetch: ((input: any, init: any) => Platform.shim.fetch(input, { ...init, dispatcher: this.#proxy } as any)) as any
     });
     const visitorData = innertube.session.context.client.visitorData;
     if (visitorData) {

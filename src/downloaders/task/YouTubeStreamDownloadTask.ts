@@ -277,7 +277,7 @@ export default class YouTubeStreamDownloadTask<T extends YouTubeStreamType> exte
     }, {
       highWaterMark: 1, // TODO: better value?
       size(chunk) {
-        return chunk.byteLength;
+        return chunk?.byteLength || 0;
       }
     });
   }

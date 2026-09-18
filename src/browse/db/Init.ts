@@ -1,4 +1,4 @@
-import Database from 'better-sqlite3';
+import { Database } from 'bun:sqlite';
 import type Logger from '../../utils/logging/Logger.js';
 import { existsSync } from 'fs';
 import { commonLog } from '../../utils/logging/Logger.js';
@@ -10,7 +10,7 @@ import { initDBProductFTS } from './ProductFTS.js';
 
 const DB_SCHEMA_VERSION = '1.2.0';
 
-export async function openDB(file: string, dryRun = false, logger?: Logger | null): Promise<Database.Database> {
+export async function openDB(file: string, dryRun = false, logger?: Logger | null): Promise<Database> {
   const dbFileExists = dryRun ? false : existsSync(file);
 
   if (dryRun) {
@@ -31,11 +31,7 @@ export async function openDB(file: string, dryRun = false, logger?: Logger | nul
   }
 
   const db = new Database(
-    dryRun ? ':memory:' : file,
-    {
-      verbose: logger ? (msg) => commonLog(logger, 'debug', 'DB', msg) : undefined
-    }
-  );
+    dryRun ? ':memory:' : file);
 
   try {
     db.exec('PRAGMA foreign_keys = OFF;');
@@ -260,7 +256,7 @@ export async function openDB(file: string, dryRun = false, logger?: Logger | nul
   return db;
 }
 
-async function checkDBSchemaVersion(db: Database.Database, logger?: Logger | null) {
+async function checkDBSchemaVersion(db: Database, logger?: Logger | null) {
   const version = getSchemaVersionFromDB(db);
   if (version) {
     commonLog(logger, 'info', 'DB', `DB schema version: ${version}`);
@@ -288,7 +284,7 @@ async function checkDBSchemaVersion(db: Database.Database, logger?: Logger | nul
   }
 }
 
-function getSchemaVersionFromDB(db: Database.Database) {
+function getSchemaVersionFromDB(db: Database) {
   const result = db
     .prepare(`SELECT value FROM env WHERE env_key = ?`)
     .get('db_schema_version') as { value: string } | undefined;

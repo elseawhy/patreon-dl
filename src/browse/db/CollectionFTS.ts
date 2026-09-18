@@ -1,4 +1,4 @@
-import { type Database } from "better-sqlite3";
+import { type Database } from "bun:sqlite";
 
 const COLLECTION_FTS_SOURCE_DELETE_SQL = `DELETE FROM collection_fts_source WHERE collection_id = old.collection_id;`;
 const COLLECTION_FTS_SOURCE_INSERT_SQL = `

@@ -1,4 +1,4 @@
-import { type Database } from 'better-sqlite3';
+import { type Database } from 'bun:sqlite';
 import { stripHtml } from 'string-strip-html';
 import type Logger from '../../utils/logging/Logger.js';
 import { type Post } from '../../entities';
@@ -109,7 +109,7 @@ export function buildPostFTS(db: Database, logger?: Logger | null) {
     WHERE content_id > ? AND content_type = 'post'
     ORDER BY content_id
     LIMIT 100`);
-  const updateStmt = db.prepare<[string, string]>(`
+  const updateStmt = db.prepare(`
     UPDATE content
     SET details = ?
     WHERE content_id = ? AND content_type='post'`);
@@ -120,7 +120,7 @@ export function buildPostFTS(db: Database, logger?: Logger | null) {
     level: 'debug',
     message: ['Get first batch of posts']
   });
-  let rows = initialSelectStmt.all();
+  let rows = initialSelectStmt.all({} as any) as any[];
   while(rows.length > 0) {
     let lastUpdatedPostId: string | null = null;
     for (const row of rows) {
@@ -151,7 +151,7 @@ export function buildPostFTS(db: Database, logger?: Logger | null) {
         level: 'debug',
         message: [`Get next batch of posts (> #${lastUpdatedPostId})`]
       });
-      rows = selectStmt.all(lastUpdatedPostId);
+      rows = selectStmt.all(lastUpdatedPostId as any) as any[];
     }
     else {
       logger?.log({

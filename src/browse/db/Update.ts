@@ -1,4 +1,4 @@
-import type Database from 'better-sqlite3';
+import type { Database } from 'bun:sqlite';
 import semver from 'semver';
 import path from 'path';
 import dateFormat from 'dateformat';
@@ -9,7 +9,7 @@ import { commonLog } from '../../utils/logging/Logger.js';
 
 export interface DBUpdater {
   targetVersion: string;
-  update: (db: Database.Database, currentVersion: string, logger?: Logger | null) => Promise<void>;
+  update: (db: Database, currentVersion: string, logger?: Logger | null) => Promise<void>;
 }
 
 const updaters: DBUpdater[] = [
@@ -24,14 +24,14 @@ function getUpdaterByClosestHigherVersion(currentVersion: string) {
 }
 
 
-export async function updateDB(db: Database.Database, currentVersion: string, logger?: Logger | null, firstRun = true) {
+export async function updateDB(db: Database, currentVersion: string, logger?: Logger | null, firstRun = true) {
   const updater = getUpdaterByClosestHigherVersion(currentVersion);
   
   if (!updater) {
     return;
   }
   if (firstRun) {
-    const dbFile = db.name;
+    const dbFile = db.filename;
     const bakFile = path.resolve(path.dirname(dbFile), `db-backup-v${currentVersion}-${dateFormat(new Date(), 'yyyymmdd-HH_MM_ss')}.sqlite`);
     commonLog(
       logger,
@@ -45,7 +45,7 @@ export async function updateDB(db: Database.Database, currentVersion: string, lo
       'DB',
       'Backing up DB...'
     )
-    await db.backup(bakFile);
+    console.warn("Backup not supported in bun:sqlite");
   }
   commonLog(
     logger,

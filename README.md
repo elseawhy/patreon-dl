@@ -2,7 +2,7 @@
 
 # patreon-dl
 
-A Patreon downloader written in [Node.js](https://nodejs.org).
+A Patreon downloader natively adapted for [Bun](https://bun.sh) (Node.js no longer required).
 
 This repo contains the `patreon-dl` library and its command-line tool. For GUI application, check out [patreon-dl-gui](https://github.com/patrickkfkan/patreon-dl-gui).
 
@@ -22,7 +22,7 @@ This repo contains the `patreon-dl` library and its command-line tool. For GUI a
 - Extensively configurable
 - Browse downloaded content through integrated web server
 
-You can run `patreon-dl` from the command-line or [use it as a library](./docs/Library.md) for your project. Node.js v20 or higher required.
+You can run `patreon-dl` from the command-line or [use it as a library](./docs/Library.md) for your project. Bun v1.0 or higher required.
 
 ### Limitations
 
@@ -89,15 +89,15 @@ See the [example config](./example-embed.conf) on how to configure an external d
 
 ## Installation
 
-1. First, install [Node.js](https://nodejs.org). 
+1. First, install [Bun](https://bun.sh).
 2. Then, install [FFmpeg](https://ffmpeg.org) (if you are going to download videos).
-3. Then, in a terminal, run the following command:
+3. Then, in a terminal, run the following command to install it globally from your fork:
 
-   ```
-   $ npm i -g patreon-dl
+   ```bash
+   $ bun add -g github:elseawhy/patreon-dl
    ```
 
-   The `-g` option is for installing `patreon-dl` globally and have the CLI executable added to the PATH. Depending on your usage, you might not need this.
+   Once installed globally, you can run the CLI from anywhere.
 
 ## CLI usage
 

@@ -1,4 +1,4 @@
-import { type Database } from 'better-sqlite3';
+import { type Database } from 'bun:sqlite';
 import { stripHtml } from 'string-strip-html';
 import type Logger from '../../utils/logging/Logger.js';
 import { type Product } from '../../entities';
@@ -108,7 +108,7 @@ export function buildProductFTS(db: Database, logger?: Logger | null) {
     WHERE content_id > ? AND content_type = 'product'
     ORDER BY content_id
     LIMIT 100`);
-  const updateStmt = db.prepare<[string, string]>(`
+  const updateStmt = db.prepare(`
     UPDATE content
     SET details = ?
     WHERE content_id = ? AND content_type='product'`);
@@ -119,7 +119,7 @@ export function buildProductFTS(db: Database, logger?: Logger | null) {
     level: 'debug',
     message: ['Get first batch of products']
   });
-  let rows = initialSelectStmt.all();
+  let rows = initialSelectStmt.all({} as any) as any[];
   while(rows.length > 0) {
     let lastUpdatedProductId: string | null = null;
     for (const row of rows) {
@@ -150,7 +150,7 @@ export function buildProductFTS(db: Database, logger?: Logger | null) {
         level: 'debug',
         message: [`Get next batch of products (> #${lastUpdatedProductId})`]
       });
-      rows = selectStmt.all(lastUpdatedProductId);
+      rows = selectStmt.all(lastUpdatedProductId as any) as any[];
     }
     else {
       logger?.log({

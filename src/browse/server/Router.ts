@@ -112,7 +112,7 @@ class _Router {
 
     this.#router.get(/(.*)/, (_req, res) => {
       res.sendFile(
-        path.resolve(import.meta.dirname, '../web/index.html'),
+        path.resolve(import.meta.dirname, '../../../dist/browse/web/index.html'),
         { dotfiles: 'allow' }
       )
     });

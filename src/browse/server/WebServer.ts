@@ -59,9 +59,9 @@ export class WebServer {
 
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));
-    this.#app.use('/assets', express.static(path.resolve(import.meta.dirname, '../web/assets')));
-    this.#app.use('/themes', express.static(path.resolve(import.meta.dirname, '../web/themes')));
-    this.#app.use('/images', express.static(path.resolve(import.meta.dirname, '../web/images')));
+    this.#app.use('/assets', express.static(path.resolve(import.meta.dirname, '../../../dist/browse/web/assets')));
+    this.#app.use('/themes', express.static(path.resolve(import.meta.dirname, '../../../dist/browse/web/themes')));
+    this.#app.use('/images', express.static(path.resolve(import.meta.dirname, '../../../dist/browse/web/images')));
     this.#app.use(router);
 
     this.#db = db;

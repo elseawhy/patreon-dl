@@ -1,4 +1,9 @@
-dist/
+
 node_modules/
 test/
 .vscode/
+# Ignore backend dist, keep frontend dist
+dist/*
+!dist/browse
+dist/browse/*
+!dist/browse/web

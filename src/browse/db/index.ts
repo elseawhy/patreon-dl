@@ -1,4 +1,4 @@
-import type Database from 'better-sqlite3';
+import type { Database } from 'bun:sqlite';
 import type Logger from '../../utils/logging/Logger.js';
 import { commonLog, type LogLevel } from '../../utils/logging/Logger.js';
 import { openDB } from './Init.js';
@@ -13,7 +13,7 @@ export type DBConstructor = new (...args: any[]) => DBBase;
 export type DBInstance = InstanceType<typeof DB>;
 
 interface DBPool {
-  [dbPath: string]: { db: Database.Database; count: number; } | undefined;
+  [dbPath: string]: { db: Database; count: number; } | undefined;
 }
 
 export class DBBase {
@@ -21,17 +21,17 @@ export class DBBase {
 
   dbPath: string | null;
   static dbPool: DBPool = {};
-  db: Database.Database;
+  db: Database;
   logger?: Logger | null;
 
-  constructor(dbPath: string | null, db: Database.Database, logger?: Logger | null) {
+  constructor(dbPath: string | null, db: Database, logger?: Logger | null) {
     this.dbPath = dbPath;
     this.db = db;
     this.logger = logger;
   }
 
   static async getInstance(file: string, dryRun = false, logger?: Logger | null): Promise<DBInstance> {
-    let db: Database.Database;
+    let db: Database;
     let dbPath: string | null;
     if (dryRun) {
       dbPath = null;
@@ -71,7 +71,7 @@ export class DBBase {
     this.db.exec(sql);
   }
 
-  run(sql: string, params?: any[]): Database.RunResult {
+  run(sql: string, params?: any[]): any {
     const stmt = this.db.prepare(sql);
     return params ? stmt.run(...params) : stmt.run();
   }
